@@ -109,7 +109,7 @@ clients made the containers a little messier though. So, in order to see the who
     
     docker-compose scale bootstrap=1 miner=2 eth=10 statsmon=1
 
-(please make sure, you `stop`ped and `rm`ed your simple network beforehand). If all works out, you should see something similar to this:
+(please make sure, you `stop`ped and `rm`ed your simple network beforehand). If all works out, point your browser at http://localhots:3000 and you should see something similar to this:
 
 ![alt text](https://github.com/konradkonrad/docker-pyeth-cluster/raw/master/screenshot.png "Private Eth with netstats
 and ...")
