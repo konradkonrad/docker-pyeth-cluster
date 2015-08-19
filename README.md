@@ -113,3 +113,5 @@ clients made the containers a little messier though. So, in order to see the who
 
 ![alt text](https://github.com/konradkonrad/docker-pyeth-cluster/raw/master/screenshot.png "Private Eth with netstats
 and ...")
+
+Oh...and send your ETH to 00000a129284a66728bab6693bfe6cbcaed72bf8 if you want to get rid of them.
