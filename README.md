@@ -111,9 +111,14 @@ Since the `bootstrap` node publishes the ports to your local network, you should
     pyethapp -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@localhost:30304' run --fake
 
 # WITH NETSTATS
-As said in the introduction, the network side of things is pretty much the same. Adding the monitoring daemons to the
-clients made the containers a little messier though. So, in order to see the whole thing in all its glory, navigate into the
-`with-netstats` folder and start your network with:
+As said in the introduction, the network side of things is pretty much the same. Adding the monitoring daemons to the clients made the containers a little messier though. So, in order to see the whole thing in all its glory, navigate into the `with-netstats`folder.
+Since there is an outstandig [bug with docker-compose and networks](https://github.com/docker/compose/issues/2908), you
+need to create a network first:
+
+    docker network create withnetstats_ethereum
+
+This needs to be done whenever you start from scratch, i.e. called `docker-compose down` in the `with-netstats` folder.
+Now you can spin up the cluster with:
     
     docker-compose scale bootstrap=1 miner=2 eth=10 statsmon=1
 
