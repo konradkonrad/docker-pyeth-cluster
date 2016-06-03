@@ -81,7 +81,7 @@ then you know, your network is healthy.
 Start yourself an interactive (`-it`) instance, with a persistent data volume and create a new account like this:
 
 ```
-docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config ethereum/client-python account new
+docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config localethereum/client-python -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@bootstrap:30303' -m 50 -c eth.genesis_hash=283bd9430c5f3114872f93beefe99d6626980b3a4a18a44ddd27749cd89688f2 account new
     
     WARNING:eth.pow using C++ implementation    
     INFO:config setup default config    path='/root/.config/pyethapp'
@@ -102,7 +102,7 @@ docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config et
 Now run an instance with your account and mine yourself some ether:
 
 ```
-docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config ethereum/client-python -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@bootstrap:30303' -m 50 -c eth.genesis_hash=283bd9430c5f3114872f93beefe99d6626980b3a4a18a44ddd27749cd89688f2 run --fake
+docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config localethereum/client-python -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@bootstrap:30303' -m 50 -c eth.genesis_hash=283bd9430c5f3114872f93beefe99d6626980b3a4a18a44ddd27749cd89688f2 run --fake
 ```
 
 ### native on the host
