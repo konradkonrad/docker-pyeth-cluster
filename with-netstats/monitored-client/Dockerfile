@@ -1,4 +1,4 @@
-FROM ethereum/client-python
+FROM localethereum/client-python
 
 RUN apt-get update &&\
     apt-get install -y curl git-core &&\
