@@ -3,6 +3,14 @@ Sometimes you maybe want to run your own little ethereum network. This is how yo
 # PREREQUISITES
 - install docker
 - install docker-compose (`pip install -r requirements.txt`)
+- prepare the client container by running
+    
+    make setup
+
+## TODOS
+- determine working docker versions
+- determin working docker-compose version
+- fix upstream `dockerhub/ethereum/client-python`
 
 # WHAT'S IN THE BOX?
 This repository contains two examples:
@@ -73,7 +81,7 @@ then you know, your network is healthy.
 Start yourself an interactive (`-it`) instance, with a persistent data volume and create a new account like this:
 
 ```
-docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config ethereum/client-python account new
+docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config localethereum/client-python -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@bootstrap:30303' -m 50 -c eth.genesis_hash=283bd9430c5f3114872f93beefe99d6626980b3a4a18a44ddd27749cd89688f2 account new
     
     WARNING:eth.pow using C++ implementation    
     INFO:config setup default config    path='/root/.config/pyethapp'
@@ -94,18 +102,23 @@ docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config et
 Now run an instance with your account and mine yourself some ether:
 
 ```
-docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config ethereum/client-python -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@bootstrap:30303' -m 50 run --fake
+docker run -it --rm --link bootstrap:bootstrap -v /tmp/pyethapp:/root/.config localethereum/client-python -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@bootstrap:30303' -m 50 -c eth.genesis_hash=283bd9430c5f3114872f93beefe99d6626980b3a4a18a44ddd27749cd89688f2 run --fake
 ```
 
 ### native on the host
 Since the `bootstrap` node publishes the ports to your local network, you should be able to connect to it from a client on the host system. Try this:
 
-    pyethapp -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@localhost:30304' run --fake
+    pyethapp -c eth.network_id=1337 -b 'enode://288b97262895b1c7ec61cf314c2e2004407d0a5dc77566877aad1f2a36659c8b698f4b56fd06c4a0c0bf007b4cfb3e7122d907da3b005fa90e724441902eb19e@localhost:30304' -c eth.genesis_hash=283bd9430c5f3114872f93beefe99d6626980b3a4a18a44ddd27749cd89688f2 run --fake
 
 # WITH NETSTATS
-As said in the introduction, the network side of things is pretty much the same. Adding the monitoring daemons to the
-clients made the containers a little messier though. So, in order to see the whole thing in all its glory, navigate into the
-`with-netstats` folder and start your network with:
+As said in the introduction, the network side of things is pretty much the same. Adding the monitoring daemons to the clients made the containers a little messier though. So, in order to see the whole thing in all its glory, navigate into the `with-netstats`folder.
+Since there is an outstandig [bug with docker-compose and networks](https://github.com/docker/compose/issues/2908), you
+need to create a network first:
+
+    docker network create withnetstats_ethereum
+
+This needs to be done whenever you start from scratch, i.e. called `docker-compose down` in the `with-netstats` folder.
+Now you can spin up the cluster with:
     
     docker-compose scale bootstrap=1 miner=2 eth=10 statsmon=1
 
