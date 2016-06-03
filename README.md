@@ -5,11 +5,11 @@ Sometimes you maybe want to run your own little ethereum network. This is how yo
 - install docker-compose (`pip install -r requirements.txt`)
 - prepare the client container by running
     
-    make setup
+        make setup
 
 ## TODOS
 - determine working docker versions
-- determin working docker-compose version
+- determine working docker-compose version
 - fix upstream `dockerhub/ethereum/client-python`
 
 # WHAT'S IN THE BOX?
